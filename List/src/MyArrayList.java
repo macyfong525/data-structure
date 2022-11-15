@@ -11,13 +11,9 @@ public class MyArrayList<T> implements ListInterface<T> {
 
     public MyArrayList(int initialCapacity) {
         // check capacity
-        if (initialCapacity < DEFAULT_CAPACITY) {
-            initialCapacity = DEFAULT_CAPACITY;
-        }
+        initialCapacity = Math.max(initialCapacity, DEFAULT_CAPACITY);
 
-        @SuppressWarnings("unchecked")
-        T[] tempList = (T[]) new Object[initialCapacity + 1];
-        list = tempList;
+        list = (T[]) new Object[initialCapacity + 1];
         size = 0;
     }
 
@@ -29,83 +25,82 @@ public class MyArrayList<T> implements ListInterface<T> {
         }
     }
 
-    private void makeRoom(int givenIndex) {
-        for (int i = size; i > givenIndex; i--) {
-            list[i] = list[i - 1];
-        }
-    }
-
-
+    @Override
     public void add(T newEntry) {
         add(size, newEntry);
     }
 
+    @Override
     public void add(int newIndex, T newEntry) {
-        if ((newIndex >= 0) && (newIndex <= size)) {
-            for (int i = size; i > newIndex; i--) {
-                list[i] = list[i - 1];
-            }
-            list[newIndex] = newEntry;
-            size++;
-            ensureCapacity();
-        } else {
-            throw new IndexOutOfBoundsException("Index out of range");
+        if (newIndex < 0 || newIndex > size) throw new IndexOutOfBoundsException("Index out of range");
+
+        for (int i = size; i > newIndex; i--) {
+            list[i] = list[i - 1];
         }
 
+        list[newIndex] = newEntry;
+        size++;
+
+        ensureCapacity();
     }
 
+    @Override
     public T remove(int givenIndex) {
-        if ((givenIndex >= 0) && givenIndex <= size - 1) {
-            T removeData = list[givenIndex];
-            for (int i = givenIndex; i < size; i++) {
-                list[i] = list[i + 1];
-            }
-            size--;
-            return removeData;
-        } else {
-            throw new IndexOutOfBoundsException("Index out of range");
-        }
+        if (givenIndex < 0 || givenIndex >= size) throw new IndexOutOfBoundsException("Index out of range");
 
+        T removeData = list[givenIndex];
+
+        for (int i = givenIndex; i < size - 1; i++) {
+            list[i] = list[i + 1];
+        }
+        size--;
+
+        return removeData;
     }
 
+    @Override
     public void clear() {
-        for (int to = size, i = size = 0; i < to; i++) {
+        for (int i = 0; i < size; i++) {
             list[i] = null;
         }
+        size = 0;
     }
 
+    @Override
     public T replace(int givenIndex, T newEntry) {
-        if (givenIndex >= 0 && givenIndex <= size - 1) {
-            list[givenIndex] = newEntry;
-            return newEntry;
-        } else {
-            throw new IndexOutOfBoundsException("Index out of range");
-        }
+        if (givenIndex < 0 || givenIndex >= size) throw new IndexOutOfBoundsException("Index out of range");
+
+        list[givenIndex] = newEntry;
+        return newEntry;
     }
 
+    @Override
     public T getEntry(int givenIndex) {
-        if (givenIndex >= 0 && givenIndex <= size - 1) {
-            return list[givenIndex];
-        } else {
-            throw new IndexOutOfBoundsException("Index out of range");
-        }
+        if (givenIndex < 0 || givenIndex >= size) throw new IndexOutOfBoundsException("Index out of range");
+
+        return list[givenIndex];
     }
 
+    @Override
     public T[] toArray() {
         return Arrays.copyOf(list, size);
     }
 
     public boolean contains(T anEntry) {
         for (T i : list) {
-            return anEntry.equals(i);
+            if (anEntry.equals(i)) {
+                return true;
+            }
         }
         return false;
     }
 
+    @Override
     public int getLength() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
