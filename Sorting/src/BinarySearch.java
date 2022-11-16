@@ -13,7 +13,7 @@ public class BinarySearch {
 
     public static int binarySearch(int[] arr, int first, int last, int value) {
         // return index as -1 as not found
-        if (first >= last) return -1;
+        if (first > last) return -1;
 
         int mid = (first + last) / 2;
 
@@ -31,7 +31,7 @@ public class BinarySearch {
         int left = 0;
         int right = arr.length - 1;
 
-        while (left < right) {
+        while (left <= right) {
             int mid = (left + right) / 2;
 
             if (arr[mid] == value) {
