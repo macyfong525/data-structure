@@ -123,12 +123,10 @@ public class BinaryNode<T> {
      */
     public int getHeight() {
         int height = 0;
-        if (leftChild.isLeaf()) {
-            height = leftChild.getHeight();
-        } else if (rightChild.isLeaf()) {
-            height = rightChild.getHeight();
+        if (!(leftChild ==null) && !(rightChild == null)) {
+            height = 1 + Math.max(leftChild.getHeight(), rightChild.getHeight());
         }
-        return 1 + height;
+        return height;
     }
 
     /**

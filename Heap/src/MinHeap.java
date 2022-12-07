@@ -1,12 +1,12 @@
 import java.util.Arrays;
 
-public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterface<T> {
+public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterface<T> {
     // reheap index starting from 1
     private T[] heap;      // Array of heap entries; ignore heap[0]
     private int lastIndex; // Index of last entry and number of entries
     private static final int DEFAULT_CAPACITY = 25;
 
-    public MaxHeap(T[] entries) {
+    public MinHeap(T[] entries) {
         this(entries.length);
         lastIndex = entries.length;
         // Copy given array to data field
@@ -17,7 +17,7 @@ public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterfac
             reheap(rootIndex);
     }
 
-    public MaxHeap(int initialCapacity) {
+    public MinHeap(int initialCapacity) {
         if (initialCapacity < DEFAULT_CAPACITY)
             initialCapacity = DEFAULT_CAPACITY;
 
@@ -28,7 +28,7 @@ public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterfac
         lastIndex = 0;
     }
 
-    public MaxHeap() {
+    public MinHeap() {
         this(DEFAULT_CAPACITY);
     }
 
@@ -37,7 +37,7 @@ public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterfac
     public void add(T newEntry) {
         int newIndex = lastIndex + 1;
         int parentIndex = newIndex / 2;
-        while (parentIndex > 0 && newEntry.compareTo(heap[parentIndex]) > 0) {
+        while (parentIndex > 0 && newEntry.compareTo(heap[parentIndex]) < 0) {
             heap[newIndex] = heap[parentIndex];
             newIndex = parentIndex;
             parentIndex /= 2;
@@ -62,17 +62,17 @@ public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterfac
         int leftChildIndex = 2 * rootIndex;
 
         while (!done && (leftChildIndex <= lastIndex)) {
-            int largerChildIndex = leftChildIndex; // Assume larger
+            int smallerChildIndex = leftChildIndex; // Assume smaller
             int rightChildIndex = leftChildIndex + 1;
 
             if ((rightChildIndex <= lastIndex) &&
-                    heap[rightChildIndex].compareTo(heap[largerChildIndex]) > 0) {
-                largerChildIndex = rightChildIndex;
+                    heap[rightChildIndex].compareTo(heap[smallerChildIndex]) < 0) {
+                smallerChildIndex = rightChildIndex;
             }
 
-            if (orphan.compareTo(heap[largerChildIndex]) < 0) {
-                heap[rootIndex] = heap[largerChildIndex];
-                rootIndex = largerChildIndex;
+            if (orphan.compareTo(heap[smallerChildIndex]) > 0) {
+                heap[rootIndex] = heap[smallerChildIndex];
+                rootIndex = smallerChildIndex;
                 leftChildIndex = 2 * rootIndex;
             } else
                 done = true;
@@ -82,7 +82,7 @@ public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterfac
 
 
     @Override
-    public T removeMax() {
+    public T removeMin() {
         T root = null;
 
         if (!isEmpty()) {
@@ -97,7 +97,7 @@ public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterfac
     }
 
     @Override
-    public T getMax() {
+    public T getMin() {
         T root = null;
         if (!isEmpty())
             root = heap[1];
@@ -132,7 +132,18 @@ public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterfac
 
     public static void main(String[] args) {
         Integer[] arr = {3, 8, 2, 1, 7, 9, 4, 6, 5};
-        MaxHeap<Integer> obj = new MaxHeap<>(arr);
+        MinHeap<Integer> obj = new MinHeap<>(arr);
         obj.print();
+        MinHeap<Integer> obj2 = new MinHeap<>();
+        obj2.add(3);
+        obj2.add(8);
+        obj2.add(2);
+        obj2.add(1);
+        obj2.add(7);
+        obj2.add(9);
+        obj2.add(4);
+        obj2.add(6);
+        obj2.add(5);
+        obj2.print();
     }
 }
