@@ -1,12 +1,12 @@
 import java.util.Arrays;
 
-public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterface<T> {
+public class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterface<T> {
     // reheap index starting from 1
     private T[] heap;      // Array of heap entries; ignore heap[0]
     private int lastIndex; // Index of last entry and number of entries
     private static final int DEFAULT_CAPACITY = 25;
 
-    public MinHeap(T[] entries) {
+    public MaxHeap(T[] entries) {
         this(entries.length);
         lastIndex = entries.length;
         // Copy given array to data field
@@ -17,7 +17,7 @@ public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterfac
             reheap(rootIndex);
     }
 
-    public MinHeap(int initialCapacity) {
+    public MaxHeap(int initialCapacity) {
         if (initialCapacity < DEFAULT_CAPACITY)
             initialCapacity = DEFAULT_CAPACITY;
 
@@ -28,7 +28,7 @@ public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterfac
         lastIndex = 0;
     }
 
-    public MinHeap() {
+    public MaxHeap() {
         this(DEFAULT_CAPACITY);
     }
 
@@ -37,7 +37,7 @@ public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterfac
     public void add(T newEntry) {
         int newIndex = lastIndex + 1;
         int parentIndex = newIndex / 2;
-        while (parentIndex > 0 && newEntry.compareTo(heap[parentIndex]) < 0) {
+        while (parentIndex > 0 && newEntry.compareTo(heap[parentIndex]) > 0) {
             heap[newIndex] = heap[parentIndex];
             newIndex = parentIndex;
             parentIndex /= 2;
@@ -56,33 +56,33 @@ public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterfac
     }
 
 
-    private void reheap(int rootIndex) {
+    private void reheap(int newIndex) {
         boolean done = false;
-        T orphan = heap[rootIndex];
-        int leftChildIndex = 2 * rootIndex;
+        T orphan = heap[newIndex];
+        int leftChildIndex = 2 * newIndex;
 
         while (!done && (leftChildIndex <= lastIndex)) {
             int largerChildIndex = leftChildIndex; // Assume larger
             int rightChildIndex = leftChildIndex + 1;
 
             if ((rightChildIndex <= lastIndex) &&
-                    heap[rightChildIndex].compareTo(heap[largerChildIndex]) < 0) {
+                    heap[rightChildIndex].compareTo(heap[largerChildIndex]) > 0) {
                 largerChildIndex = rightChildIndex;
             }
 
-            if (orphan.compareTo(heap[largerChildIndex]) > 0) {
-                heap[rootIndex] = heap[largerChildIndex];
-                rootIndex = largerChildIndex;
-                leftChildIndex = 2 * rootIndex;
+            if (orphan.compareTo(heap[largerChildIndex]) < 0) {
+                heap[newIndex] = heap[largerChildIndex];
+                newIndex = largerChildIndex;
+                leftChildIndex = 2 * newIndex;
             } else
                 done = true;
         }
-        heap[rootIndex] = orphan;
+        heap[newIndex] = orphan;
     }
 
 
     @Override
-    public T removeMin() {
+    public T removeMax() {
         T root = null;
 
         if (!isEmpty()) {
@@ -97,7 +97,7 @@ public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterfac
     }
 
     @Override
-    public T getMin() {
+    public T getMax() {
         T root = null;
         if (!isEmpty())
             root = heap[1];
@@ -123,6 +123,7 @@ public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterfac
     }
 
     public void print() {
+        System.out.println(Arrays.toString(heap));
         for (int i = 1; i <= lastIndex; i++) {
             System.out.println("Parent: " + heap[i] + " Leftchild: " + heap[i * 2] + " RightChild " + heap[i * 2 + 1]);
         }
@@ -131,7 +132,18 @@ public class MinHeap<T extends Comparable<? super T>> implements MinHeapInterfac
 
     public static void main(String[] args) {
         Integer[] arr = {3, 8, 2, 1, 7, 9, 4, 6, 5};
-        MinHeap<Integer> obj = new MinHeap<>(arr);
+        MaxHeap<Integer> obj = new MaxHeap<>(arr);
         obj.print();
+        MaxHeap<Integer> obj2 = new MaxHeap<>();
+        obj2.add(3);
+        obj2.add(8);
+        obj2.add(2);
+        obj2.add(1);
+        obj2.add(7);
+        obj2.add(9);
+        obj2.add(4);
+        obj2.add(6);
+        obj2.add(5);
+        obj2.print();
     }
 }

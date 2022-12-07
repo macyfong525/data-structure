@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
-public class HeapSort<E extends Comparable<E>> {
-    // reheap index starting from 0
+public class HeapSort<E extends Comparable<E>>{
+    // index starting from 0
     public static <T extends Comparable<? super T>>
     void heapSort(T[] array, int n) {
         // Create first heap
@@ -16,7 +16,7 @@ public class HeapSort<E extends Comparable<E>> {
         }
     }
 
-    public static void swap(Object[] arr, int x, int y) {
+    public static void swap(Object[] arr, int x, int y){
         Object temp = arr[x];
         arr[x] = arr[y];
         arr[y] = temp;
@@ -49,7 +49,7 @@ public class HeapSort<E extends Comparable<E>> {
 
     public static void main(String[] args) {
         HeapSort<Integer> heap = new HeapSort<>();
-        Integer[] arr = {3, 8, 2, 0, 7};
+        Integer[] arr = {3,8,2,0,7};
         heap.heapSort(arr, arr.length);
         System.out.println(Arrays.toString(arr));
     }
