@@ -157,17 +157,6 @@ public class DriverBT {
         } // end if
     } //
 
-public static <T extends Comparable<? super T>> boolean bstSearch(BinaryNode<T> node, T searchObj) {
-    if (node == null)
-        return false;
-    else if (searchObj.equals(node.data))
-        return true;
-    else if (searchObj.compareTo(node.data) < 0)
-        return bstSearch(node.getLeftChild(), searchObj);
-    else
-        return bstSearch(node.getRightChild(), searchObj);
-}
-
     //preorderTraverse method
     public static void preorderTraverse(BinaryNode node) {
         if (node != null) {
