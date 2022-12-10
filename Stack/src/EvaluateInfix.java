@@ -76,6 +76,6 @@ public class EvaluateInfix {
 
 
     public static void main(String[] args) {
-        System.out.println(infix("(2+3)*4-9^2"));
+        System.out.println(infix("(2+3+4)/(4-5)-5"));
     }
 }

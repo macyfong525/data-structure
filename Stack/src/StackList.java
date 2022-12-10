@@ -1,14 +1,22 @@
 import java.util.Arrays;
 
+// TODO add capacity and check grow shrink
 public class StackList<T> implements StackInterface<T> {
     private T[] arrayList;
     int size;
+
+
+//    public void checkCapacity(){
+//        if(size+1>=capacity){
+//            capacity*=2;
+//            cirularList = Arrays.copyOf(cirularList, capacity);
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
     public StackList() {
         this.size = 0;
         this.arrayList = (T[]) new Object[0];
-        ;
     }
 
     private T[] grow() {

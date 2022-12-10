@@ -1,8 +1,4 @@
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 
 public class InfixPosfix {
     // A utility function to return
@@ -26,8 +22,8 @@ public class InfixPosfix {
     }
 
     // The main method that converts
-    // given infix expression
-    // to postfix expression.
+// given infix expression
+// to postfix expression.
     static String infixToPostfix(String exp) {
         // initializing empty String for result
         String result = new String("");
@@ -38,26 +34,20 @@ public class InfixPosfix {
         for (int i = 0; i < exp.length(); ++i) {
             char c = exp.charAt(i);
 
-            if (Character.isLetterOrDigit(c))
-                result += c;
-
-            else if (c == '(')
+            if (c == '(' || c == '^')
                 stack.push(c);
-
             else if (c == ')') {
                 while (!stack.isEmpty() && stack.peek() != '(') {
-                    result += stack.peek();
-                    stack.pop();
+                    result += stack.pop();
                 }
+                stack.pop(); // pop (
+            } else if (Character.isLetterOrDigit(c))
+                result += c;
 
-                stack.pop();
-            } else if (c == '^') {
-                stack.push(c);
-            } else {
+            else {
                 // pop checking, as ( return -1
                 while (!stack.isEmpty() && Prec(c) <= Prec(stack.peek())) {
-                    result += stack.peek();
-                    stack.pop();
+                    result += stack.pop();
                 }
                 stack.push(c);
             }
@@ -65,18 +55,17 @@ public class InfixPosfix {
 
         // pop all the operators from the stack
         while (!stack.isEmpty()) {
-            if (stack.peek() == '(')
-                return "Invalid Expression";
-            result += stack.peek();
-            stack.pop();
+            result += stack.pop();
         }
-
         return result;
     }
 
     // Driver's code
     public static void main(String[] args) {
-
-
+        // ( a ^ b * c − d ) ^ e + f ^ g ^ h
+        // (a – b * c) / (d * e * f + g)
+//        String s = "(a^b*c-d)^e+f^g^h";
+        String s = "(a-b*c)/(d*e*f+g)";
+        System.out.println(infixToPostfix(s));
     }
 }
